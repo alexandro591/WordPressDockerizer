@@ -1,9 +1,12 @@
 server {
+    client_max_body_size 512M;
     listen 80;
     listen [::]:80;
-    root /var/www/html;
     server_name {{ wordpress_domains }};
     location / {
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-Proto https;
         proxy_pass http://localhost:{{ wordpress_port }};
     }
 }

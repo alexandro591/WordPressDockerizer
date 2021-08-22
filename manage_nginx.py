@@ -16,6 +16,7 @@ if action == "init" or action == "start":
   if include_www == "--include-www":
     nginx_domain_action = f"-d {wordpress_domain} -d www.{wordpress_domain}"  
   os.system(f"sudo certbot --nginx {nginx_domain_action}")
+
 if action == "stop":
   os.system(f"sudo rm /etc/nginx/conf.d/{wordpress_domain}.conf")
 
