@@ -17,3 +17,5 @@ services:
       MYSQL_PASSWORD: {{ mysql_password }}
     networks:
       - wordpress_network
+    ports:
+      - {{ database_port }}:3306

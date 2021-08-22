@@ -4,7 +4,8 @@ from settings import DOCKER_COMPOSE_JINJA_FOLDER,\
     OUTPUT_BUILD_DIR,\
     DOCKER_COMPOSE_JINJA_WORDPRESS,\
     DOCKER_COMPOSE_WORDPRESS_FILENAME_UNFORMATTED,\
-    DATABASE_KEY_FILENAME
+    DATABASE_KEY_FILENAME,\
+    HTACCESS_INIT_CONTENT
 import json
 
 def main():
@@ -17,7 +18,7 @@ def main():
     )
 
     while not wordpress_domain:
-        wordpress_domain = input("Type the domain of your WordPress site: ")
+        wordpress_domain    = input("Type the domain of your WordPress site: ")
 
     while not wordpress_port:
         wordpress_port      = input("Type the WordPress docker port: ")

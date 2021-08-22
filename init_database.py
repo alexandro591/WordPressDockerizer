@@ -8,10 +8,11 @@ from settings import DOCKER_COMPOSE_JINJA_FOLDER,\
 import json
 
 def main():
-    mysql_root_password = ""
-    mysql_database      = ""
-    mysql_user          = ""
-    mysql_password      = ""
+    mysql_root_password : str = ""
+    mysql_database      : str = ""
+    mysql_user          : str = ""
+    mysql_password      : str = ""
+    database_port       : int = 0
 
     env = Environment(
         loader=FileSystemLoader(DOCKER_COMPOSE_JINJA_FOLDER),
@@ -28,13 +29,17 @@ def main():
         mysql_user          = input("Type the MySQL user: ")
 
     while not mysql_password:
-        mysql_password      = input("Type the MySQL password: ")
+        mysql_password      = input("Type the MySQL user password: ")
+        
+    while not database_port:
+        database_port      = int(input("Type the MySQL localhost fordward port: "))
 
     docker_compose_content_dict = {
         "mysql_root_password": mysql_root_password,
         "mysql_database": mysql_database,
         "mysql_user": mysql_user,
         "mysql_password": mysql_password,
+        "database_port": database_port,
     }
     docker_compose_content = env.get_template(f"{DOCKER_COMPOSE_JINJA_DATABASE}")
     docker_compose_content = docker_compose_content.render(docker_compose_content_dict)

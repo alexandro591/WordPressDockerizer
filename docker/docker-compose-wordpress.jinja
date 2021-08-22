@@ -12,7 +12,7 @@ services:
       - {{ wordpress_port }}:80
     restart: always
     volumes: 
-      - ./{{ wordpress_base_folder }}:/var/www/html
+      - ../websites/{{ wordpress_base_folder }}:/var/www/html:rw
     environment:
       WORDPRESS_DB_HOST: wordpress_db:3306
       WORDPRESS_DB_USER: {{ mysql_user }}
