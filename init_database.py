@@ -54,7 +54,7 @@ def main():
         database_key_content = json.dumps(docker_compose_content_dict)
         database_key_file.write(database_key_content)
 
-    os.system(f"docker-compose -f {OUTPUT_BUILD_DIR}/{DOCKER_COMPOSE_DATABASE_FILENAME} up -d")
+    os.system(f"docker-compose -f {OUTPUT_BUILD_DIR}/{DOCKER_COMPOSE_DATABASE_FILENAME} up -d --build")
 
 if __name__ == "__main__":
     main()

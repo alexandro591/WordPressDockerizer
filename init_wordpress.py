@@ -43,10 +43,16 @@ def main():
     docker_compose_content = env.get_template(f"{DOCKER_COMPOSE_JINJA_WORDPRESS}")
     docker_compose_content = docker_compose_content.render(docker_compose_content_dict)
 
-    with open(f"{OUTPUT_BUILD_DIR}/{DOCKER_COMPOSE_WORDPRESS_FILENAME}", "w") as docker_compose_file:
-        docker_compose_file.write(docker_compose_content)
+    os.mkdir(f"{OUTPUT_BUILD_DIR}/{wordpress_domain}")
+    os.mkdir(f"{OUTPUT_BUILD_DIR}/{wordpress_domain}/data")
 
-    os.system(f"docker-compose -f {OUTPUT_BUILD_DIR}/{DOCKER_COMPOSE_WORDPRESS_FILENAME} up -d")
+    with open(f"{OUTPUT_BUILD_DIR}/{wordpress_domain}/{DOCKER_COMPOSE_WORDPRESS_FILENAME}", "w") as docker_compose_file:
+        docker_compose_file.write(docker_compose_content)
+        
+    with open(f"{OUTPUT_BUILD_DIR}/{wordpress_domain}/.htaccess", "w") as htaccess_file:
+        htaccess_file.write(HTACCESS_INIT_CONTENT)
+
+    os.system(f"docker-compose -f {OUTPUT_BUILD_DIR}/{wordpress_domain}/{DOCKER_COMPOSE_WORDPRESS_FILENAME} up -d --build")
 
 if __name__ == "__main__":
     main()
