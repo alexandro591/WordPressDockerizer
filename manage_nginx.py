@@ -2,22 +2,38 @@ import os
 import sys
 from settings import OUTPUT_BUILD_DIR
 
-os.system("sudo apt install nginx")
-os.system("sudo apt install certbot")
-os.system("sudo apt install python3-certbot-nginx")
+def main():
+  os.system("sudo apt install nginx")
+  os.system("sudo apt install certbot")
+  os.system("sudo apt install python3-certbot-nginx")
 
-action = sys.argv[1]
-wordpress_domain = sys.argv[2].replace("www", "")
-include_www = sys.argv[3] if len(sys.argv) > 3 else None
+  action            : str = ""
+  wordpress_domain  : str = ""
+  include_www       : str = ""
+  
+  while action != "start" and action != "stop":
+    action              = input("Type the action you want to take (start/stop): ")
 
-if action == "init" or action == "start":
-  os.system(f"sudo cp {OUTPUT_BUILD_DIR}/{wordpress_domain}/{wordpress_domain}.conf /etc/nginx/conf.d/")
-  nginx_domain_action =  f"-d {wordpress_domain}"
-  if include_www == "--include-www":
+  while not wordpress_domain:
+    wordpress_domain    = input("Type the wordpress domain that is going to be affected: ")
+    wordpress_domain    = wordpress_domain.replace("www", "")
+
+  nginx_domain_action   =  f"-d {wordpress_domain}"
+  
+  while include_www != "y" and include_www != "n" and action == "start":
+    include_www         = input("Should we include www in SSL certificate? (y/n): ")
+
+  if include_www == "y":
     nginx_domain_action = f"-d {wordpress_domain} -d www.{wordpress_domain}"  
-  os.system(f"sudo certbot --nginx {nginx_domain_action}")
 
-if action == "stop":
-  os.system(f"sudo rm /etc/nginx/conf.d/{wordpress_domain}.conf")
+  if action == "start":
+    os.system(f"sudo cp {OUTPUT_BUILD_DIR}/{wordpress_domain}/{wordpress_domain}.conf /etc/nginx/conf.d/")
+    os.system(f"sudo certbot --nginx {nginx_domain_action}")
 
-os.system(f"sudo service nginx restart")
+  if action == "stop":
+    os.system(f"sudo rm /etc/nginx/conf.d/{wordpress_domain}.conf")
+
+  os.system(f"sudo service nginx restart")
+  
+if __name__ == "__main__":
+  main()
