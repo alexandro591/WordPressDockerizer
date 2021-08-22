@@ -1,6 +1,6 @@
 import os
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-from settings import DOCKER_COMPOSE_JINJA_FOLDER,\
+from settings import JINJA_FOLDER,\
     OUTPUT_BUILD_DIR,\
     DOCKER_COMPOSE_JINJA_DATABASE,\
     DOCKER_COMPOSE_DATABASE_FILENAME,\
@@ -12,10 +12,10 @@ def main():
     mysql_database      : str = ""
     mysql_user          : str = ""
     mysql_password      : str = ""
-    database_port       : int = 0
+    database_port       : str = ""
 
     env = Environment(
-        loader=FileSystemLoader(DOCKER_COMPOSE_JINJA_FOLDER),
+        loader=FileSystemLoader(JINJA_FOLDER),
         autoescape=select_autoescape()
     )
 
@@ -32,7 +32,7 @@ def main():
         mysql_password      = input("Type the MySQL user password: ")
         
     while not database_port:
-        database_port      = int(input("Type the MySQL localhost fordward port: "))
+        database_port      = input("Type the MySQL localhost fordward port: ")
 
     docker_compose_content_dict = {
         "mysql_root_password": mysql_root_password,

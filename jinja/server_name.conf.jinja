@@ -1,0 +1,9 @@
+server {
+    listen 80;
+    listen [::]:80;
+    root /var/www/html;
+    server_name {{ wordpress_domains }};
+    location / {
+        proxy_pass http://localhost:{{ wordpress_port }};
+    }
+}
